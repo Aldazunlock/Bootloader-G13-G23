@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Claves OEM - Moto G13/G23</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #34495e;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --gradient-start: #2c3e50;
+            --gradient-end: #4ca1af;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            margin: 20px 0;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 60%);
+            transform: rotate(30deg);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin: 25px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--secondary);
+            display: flex;
+            align-items: center;
+        }
+        
+        h2 i {
+            margin-right: 10px;
+            color: var(--secondary);
+        }
+        
+        h3 {
+            color: var(--dark);
+            margin: 20px 0 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        h3 i {
+            margin-right: 8px;
+            color: var(--secondary);
+        }
+        
+        .card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid var(--secondary);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+        }
+        
+        label i {
+            margin-right: 8px;
+            color: var(--secondary);
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        input[type="text"]:focus {
+            border-color: var(--secondary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2), inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(to right, var(--dark), #2c3e50);
+        }
+        
+        .btn-success {
+            background: linear-gradient(to right, var(--success), #219653);
+        }
+        
+        .btn-warning {
+            background: linear-gradient(to right, var(--warning), #e67e22);
+        }
+        
+        .result-container {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+            gap: 12px;
+        }
+        
+        #hashOutput {
+            flex-grow: 1;
+            padding: 16px;
+            background-color: var(--light);
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            font-weight: 600;
+            word-break: break-all;
+            min-height: 55px;
+            border: 2px dashed var(--secondary);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+            color: var(--dark);
+        }
+        
+        .instructions {
+            background-color: #f8f9fa;
+            border-left: 5px solid var(--secondary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .instructions ol {
+            padding-left: 25px;
+            margin: 15px 0;
+        }
+        
+        .instructions li {
+            margin-bottom: 12px;
+            padding-left: 8px;
+        }
+        
+        .instructions code {
+            background-color: #e9ecef;
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            color: var(--dark);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .alert {
+            padding: 16px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: none;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .alert i {
+            margin-right: 12px;
+            font-size: 1.5rem;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            padding: 20px;
+        }
+        
+        a {
+            color: var(--secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 600;
+        }
+        
+        a:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+        
+        .credits {
+            background: linear-gradient(135deg, var(--primary), var(--dark));
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 1rem;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .credits p {
+            margin: 8px 0;
+        }
+        
+        .highlight {
+            color: #ffeb3b;
+            font-weight: bold;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .feature i {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-right: 15px;
+            min-width: 30px;
+            text-align: center;
+        }
+        
+        @media (max-width: 650px) {
+            .container {
+                border-radius: 10px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .result-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            header {
+                padding: 20px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-key"></i>
+            </div>
+            <h1>Generador de Claves OEM</h1>
+            <p class="subtitle">Para dispositivos Motorola Moto G13/G23</p>
+            <p class="subtitle">Desbloquea el bootloader de tu dispositivo</p>
+        </header>
+        
+        <div class="content">
+            <div class="card">
+                <h2><i class="fas fa-code"></i> Generar clave OEM</h2>
+                
+                <div class="alert alert-success" id="successAlert">
+                    <i class="fas fa-check-circle"></i>
+                    <span>¡Clave generada y copiada al portapapeles!</span>
+                </div>
+                <div class="alert alert-error" id="errorAlert">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>Por favor, ingresa una clave válida de 32 caracteres</span>
+                </div>
+                
+                <form id="hashForm">
+                    <div class="form-group">
+                        <label for="inputText"><i class="fas fa-keyboard"></i> Ingresa la clave obtenida del dispositivo (32 caracteres):</label>
+                        <input type="text" id="inputText" name="inputText" required 
+                               placeholder="Ej: 1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p"
+                               pattern="[A-Za-z0-9]{32}" 
+                               title="Debe contener exactamente 32 caracteres alfanuméricos">
+                    </div>
+                    
+                    <button type="submit" class="btn"><i class="fas fa-cogs"></i> Generar clave OEM</button>
+                </form>
+                
+                <div class="result-container">
+                    <label for="hashOutput"><i class="fas fa-lock-open"></i> Clave OEM generada:</label>
+                    <div id="hashOutput"></div>
+                    <button class="btn btn-secondary" id="copyButton"><i class="fas fa-copy"></i> Copiar</button>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-success" id="clearButton"><i class="fas fa-broom"></i> Limpiar</button>
+                    <button class="btn btn-warning" id="exampleButton"><i class="fas fa-magic"></i> Insertar ejemplo</button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-graduation-cap"></i> Instrucciones de uso</h2>
+                
+                <div class="instructions">
+                    <ol>
+                        <li>Conecta tu dispositivo en modo fastboot (mantén volumen - y power)</li>
+                        <li>Ejecuta el comando: <code>fastboot oem get_key</code></li>
+                        <li>Copia la clave de 32 caracteres que se muestra</li>
+                        <li>Pégala en el campo superior y haz clic en "Generar clave OEM"</li>
+                        <li>Utiliza la clave generada con el comando: <code>fastboot oem key &lt;CLAVE_GENERADA&gt;</code></li>
+                        <li>Finalmente, ejecuta: <code>fastboot flashing unlock</code></li>
+                    </ol>
+                </div>
+                
+                <div class="feature">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p><strong>⚠️ Importante:</strong> Este proceso borrará todos los datos de tu dispositivo. Haz una copia de seguridad primero.</p>
+                </div>
+                
+                <h3><i class="fas fa-info-circle"></i> Unete a la comunidad</h3>
+                <p> en: <a href="https://t.me/exclusiveunlockteam" target="_blank">Bootloader | Motorola G23/G13</a></p>
+            </div>
+        </div>
+        
+        <div class="credits">
+            <p><span class="highlight">Keygen original por Shomy</span> - Probado por DiabloSat y el grupo Helio G85</p>
+            <p><span class="highlight">Adaptado por AldazUnlock</span> - Contribuciones de la comunidad de desarrolladores</p>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Esta herramienta es para fines educativos. Úsala bajo tu propia responsabilidad.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('hashForm');
+            const inputText = document.getElementById('inputText');
+            const hashOutput = document.getElementById('hashOutput');
+            const copyButton = document.getElementById('copyButton');
+            const clearButton = document.getElementById('clearButton');
+            const exampleButton = document.getElementById('exampleButton');
+            const successAlert = document.getElementById('successAlert');
+            const errorAlert = document.getElementById('errorAlert');
+            
+            // Función para generar el hash (igual que en Python)
+            function generateHash(key) {
+                const combinedText = key + key;
+                const hash = CryptoJS.SHA256(combinedText).toString(CryptoJS.enc.Hex);
+                return hash.substring(0, 32);
+            }
+            
+            // Función para copiar al portapapeles
+            function copyToClipboard(text) {
+                navigator.clipboard.writeText(text).then(() => {
+                    successAlert.textContent = "¡Clave copiada al portapapeles!";
+                    successAlert.style.display = 'flex';
+                    setTimeout(() => {
+                        successAlert.style.display = 'none';
+                    }, 3000);
+                }).catch(err => {
+                    console.error('Error al copiar: ', err);
+                });
+            }
+            
+            // Manejar el envío del formulario
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                const key = inputText.value.trim();
+                
+                if (key.length !== 32) {
+                    errorAlert.style.display = 'flex';
+                    setTimeout(() => {
+                        errorAlert.style.display = 'none';
+                    }, 3000);
+                    return;
+                }
+                
+                const oemKey = generateHash(key);
+                hashOutput.textContent = oemKey;
+                
+                // Copiar automáticamente al portapapeles
+                copyToClipboard(oemKey);
+            });
+            
+            // Manejar el botón de copiar
+            copyButton.addEventListener('click', function() {
+                if (hashOutput.textContent) {
+                    copyToClipboard(hashOutput.textContent);
+                }
+            });
+            
+            // Manejar el botón de limpiar
+            clearButton.addEventListener('click', function() {
+                inputText.value = '';
+                hashOutput.textContent = '';
+                inputText.focus();
+            });
+            
+            // Insertar texto de ejemplo
+            exampleButton.addEventListener('click', function() {
+                inputText.value = '1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p';
+            });
+        });
+    </script>
+</body>
+</html>
